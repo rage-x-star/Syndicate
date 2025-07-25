@@ -1,0 +1,104 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #f6f8fa;
+    color: #2c3e50;
+}
+
+header {
+    background: #273c75;
+    color: #fff;
+    padding: 1em 0;
+    text-align: center;
+}
+
+main {
+    max-width: 700px;
+    margin: 2em auto;
+    padding: 1em;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(44, 62, 80, 0.1);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+input[type="text"], input[type="password"], textarea {
+    padding: 0.7em;
+    border: 1px solid #b2bec3;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+button {
+    background: #273c75;
+    color: #fff;
+    border: none;
+    padding: 0.8em;
+    border-radius: 4px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+button:hover {
+    background: #4078c0;
+}
+
+#announcements-section ul,
+#admin-announcements-list {
+    list-style: none;
+    padding: 0;
+}
+
+.announcement {
+    background: #f1f2f6;
+    border-left: 4px solid #273c75;
+    margin-bottom: 1em;
+    padding: 1em;
+    border-radius: 4px;
+}
+
+.announcement-title {
+    font-weight: bold;
+    margin-bottom: 0.5em;
+}
+
+.announcement-date {
+    font-size: 0.9em;
+    color: #636e72;
+    margin-bottom: 0.5em;
+}
+
+footer {
+    text-align: center;
+    padding: 1em 0;
+    background: #dfe6e9;
+    color: #636e72;
+    margin-top: 2em;
+}
+
+.admin-login-link {
+    text-align: right;
+    margin-top: 2em;
+}
+
+.error {
+    color: red;
+    font-size: 1em;
+    margin-top: 0.5em;
+}
+
+@media (max-width: 600px) {
+    main {
+        margin: 1em;
+        padding: 0.5em;
+    }
+    header, footer {
+        padding: 0.5em 0;
+    }
+}
