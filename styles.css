@@ -29,11 +29,27 @@ body.dark-bg {
     top: 6vh;
     color: var(--text-light);
     animation: floatin .8s;
+    z-index: 1;
+}
+
+/* Larger admin panel */
+body.admin-panel .floating-panel {
+    max-width: 700px;
+    padding: 2.2em 2.5em 2em 2.5em;
 }
 
 @keyframes floatin {
     from { transform: translateY(60px); opacity:0; }
     to { transform: translateY(0); opacity: 1;}
+}
+
+.animated-bg-canvas {
+    position: fixed;
+    z-index: 0;
+    left: 0; top: 0;
+    width: 100vw; height: 100vh;
+    pointer-events: none;
+    display: block;
 }
 
 .panel-header {
@@ -69,7 +85,7 @@ body.dark-bg {
 
 #announcements-section ul,
 #admin-announcements-list,
-.visitor-list {
+.member-list {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -285,7 +301,7 @@ textarea {
     margin-bottom: 0.6em;
 }
 
-.visitor-welcome {
+.member-welcome {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -297,12 +313,12 @@ textarea {
     border-radius: 9px;
 }
 
-.visitor-list {
+.member-list {
     margin-top: 1em;
     color: var(--text-light);
 }
 
-.visitor-list li {
+.member-list li {
     background: #232635;
     color: var(--text-light);
     padding: 0.5em 1em;
@@ -314,11 +330,17 @@ textarea {
     gap: .6em;
 }
 
-.visitor-list li i {
+.member-list li i {
     color: var(--primary);
     font-size: 1em;
 }
 
+@media (max-width: 800px) {
+    body.admin-panel .floating-panel {
+        max-width: 97vw;
+        padding: 1.2em 0.3em 1em 0.3em;
+    }
+}
 @media (max-width: 600px) {
     .floating-panel {
         margin: 2vw;
