@@ -3,30 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>the Syndicate - Announcements</title>
+    <title>The Syndicate - Announcements</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body class="dark-bg">
+    <canvas class="animated-bg-canvas"></canvas>
     <div class="floating-panel">
         <div class="panel-header">
-            <h1><i class="fa-solid fa-mask"></i> the Syndicate</h1>
+            <h1><i class="fa-solid fa-mask"></i> The Syndicate</h1>
             <a class="header-link" href="admin.html" title="Admin Login"><i class="fa-solid fa-user-lock"></i></a>
         </div>
-        <section id="visitor-login-section">
-            <form id="visitor-login-form">
+        <section id="member-login-section">
+            <form id="member-login-form">
                 <div class="input-group">
                     <i class="fa-solid fa-user"></i>
-                    <input type="text" id="visitor-username" placeholder="Enter your username" required maxlength="20" />
+                    <input type="text" id="member-username" placeholder="Enter your member username" required maxlength="20" />
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="member-password" placeholder="Enter your password" required maxlength="30" />
                 </div>
                 <button type="submit" class="btn-primary"><i class="fa-solid fa-sign-in-alt"></i> Login</button>
-                <p id="visitor-login-error" class="error"></p>
+                <p id="member-login-error" class="error"></p>
             </form>
         </section>
         <section id="announcements-section" style="display:none;">
-            <div class="visitor-welcome">
-                <span id="visitor-welcome-msg"></span>
-                <button id="visitor-logout-btn" class="icon-btn" title="Logout"><i class="fa-solid fa-sign-out-alt"></i></button>
+            <div class="member-welcome">
+                <span id="member-welcome-msg"></span>
+                <button id="member-logout-btn" class="icon-btn" title="Logout"><i class="fa-solid fa-sign-out-alt"></i></button>
             </div>
             <ul id="announcements-list"></ul>
             <div class="no-announcements" id="no-announcements" style="display:none;">
@@ -35,6 +40,7 @@
             </div>
         </section>
     </div>
+    <script src="animated-bg.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
