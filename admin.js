@@ -11,18 +11,19 @@ function escapeHtml(text) {
     });
 }
 
-function getVisitorList() {
-    return JSON.parse(localStorage.getItem("visitors") || "[]");
+function getMemberList() {
+    // Members: array of {username, password}
+    return JSON.parse(localStorage.getItem("members") || "[]");
 }
-function setVisitorList(list) {
-    localStorage.setItem("visitors", JSON.stringify(list));
+function setMemberList(list) {
+    localStorage.setItem("members", JSON.stringify(list));
 }
 
 function showAdminPanel() {
     document.getElementById('login-section').style.display = "none";
     document.getElementById('admin-panel-section').style.display = "block";
     loadAdminAnnouncements();
-    loadVisitorList();
+    loadMemberList();
 }
 
 function hideAdminPanel() {
@@ -50,19 +51,19 @@ function loadAdminAnnouncements() {
     });
 }
 
-function loadVisitorList() {
-    const vList = document.getElementById('visitor-list');
-    if (!vList) return;
-    vList.innerHTML = "";
-    const visitors = getVisitorList();
-    if (!visitors.length) {
-        vList.innerHTML = `<li><i class="fa-solid fa-user-slash"></i> No registered visitors.</li>`;
+function loadMemberList() {
+    const mList = document.getElementById('member-list');
+    if (!mList) return;
+    mList.innerHTML = "";
+    const members = getMemberList();
+    if (!members.length) {
+        mList.innerHTML = `<li><i class="fa-solid fa-user-slash"></i> No registered members.</li>`;
         return;
     }
-    visitors.forEach(username => {
+    members.forEach(member => {
         const li = document.createElement('li');
-        li.innerHTML = `<i class="fa-solid fa-user"></i> ${escapeHtml(username)}`;
-        vList.appendChild(li);
+        li.innerHTML = `<i class="fa-solid fa-user"></i> ${escapeHtml(member.username)}`;
+        mList.appendChild(li);
     });
 }
 
@@ -132,42 +133,44 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // Visitor registration logic
-    const registerForm = document.getElementById("register-visitor-form");
+    // Member registration logic
+    const registerForm = document.getElementById("register-member-form");
     if (registerForm) {
         registerForm.addEventListener("submit", function(e) {
             e.preventDefault();
-            const username = document.getElementById("new-visitor-username").value.trim();
-            const errorP = document.getElementById("register-visitor-error");
-            const successP = document.getElementById("register-visitor-success");
+            const username = document.getElementById("new-member-username").value.trim();
+            const password = document.getElementById("new-member-password").value;
+            const errorP = document.getElementById("register-member-error");
+            const successP = document.getElementById("register-member-success");
             errorP.textContent = "";
             successP.textContent = "";
-            if (!username) {
-                errorP.textContent = "Username cannot be empty.";
+            if (!username || !password) {
+                errorP.textContent = "Username and password cannot be empty.";
                 return;
             }
             if (username.toLowerCase() === ADMIN_USER || username.toLowerCase() === "admin") {
                 errorP.textContent = "Username reserved.";
                 return;
             }
-            let visitors = getVisitorList();
-            if (visitors.includes(username)) {
+            let members = getMemberList();
+            if (members.some(m => m.username === username)) {
                 errorP.textContent = "Username already registered.";
                 return;
             }
-            visitors.push(username);
-            setVisitorList(visitors);
-            document.getElementById("new-visitor-username").value = "";
-            successP.textContent = `Visitor "${username}" registered!`;
-            loadVisitorList();
+            members.push({ username, password });
+            setMemberList(members);
+            document.getElementById("new-member-username").value = "";
+            document.getElementById("new-member-password").value = "";
+            successP.textContent = `Member "${username}" registered!`;
+            loadMemberList();
             // Notify all tabs
-            localStorage.setItem("visitors", JSON.stringify(visitors));
+            localStorage.setItem("members", JSON.stringify(members));
         });
     }
 
-    // Listen for visitor list changes
+    // Listen for member list changes
     window.addEventListener("storage", function(e) {
-        if (e.key === "visitors") loadVisitorList();
+        if (e.key === "members") loadMemberList();
         if (e.key === "announcements") loadAdminAnnouncements();
     });
 });
