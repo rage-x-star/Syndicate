@@ -1,20 +1,21 @@
-// Visitor login and announcement view logic
+// Member login and announcement view logic
 
-function getVisitorList() {
-    return JSON.parse(localStorage.getItem("visitors") || "[]");
+function getMemberList() {
+    // Members: array of {username, password}
+    return JSON.parse(localStorage.getItem("members") || "[]");
 }
-function setVisitorList(list) {
-    localStorage.setItem("visitors", JSON.stringify(list));
+function setMemberList(list) {
+    localStorage.setItem("members", JSON.stringify(list));
 }
 
-function getVisitorSession() {
-    return sessionStorage.getItem("visitor_username");
+function getMemberSession() {
+    return sessionStorage.getItem("member_username");
 }
-function setVisitorSession(username) {
-    sessionStorage.setItem("visitor_username", username);
+function setMemberSession(username) {
+    sessionStorage.setItem("member_username", username);
 }
-function clearVisitorSession() {
-    sessionStorage.removeItem("visitor_username");
+function clearMemberSession() {
+    sessionStorage.removeItem("member_username");
 }
 
 function escapeHtml(text) {
@@ -28,14 +29,14 @@ function escapeHtml(text) {
 }
 
 function showAnnouncements(username) {
-    document.getElementById("visitor-login-section").style.display = "none";
+    document.getElementById("member-login-section").style.display = "none";
     document.getElementById("announcements-section").style.display = "block";
-    document.getElementById("visitor-welcome-msg").textContent = `Welcome, ${username}!`;
+    document.getElementById("member-welcome-msg").textContent = `Welcome, ${username}!`;
     renderAnnouncements();
 }
 
 function showLogin() {
-    document.getElementById("visitor-login-section").style.display = "block";
+    document.getElementById("member-login-section").style.display = "block";
     document.getElementById("announcements-section").style.display = "none";
 }
 
@@ -63,55 +64,62 @@ function renderAnnouncements() {
     });
 }
 
-// Sync across tabs for announcements and visitors
+// Sync across tabs for announcements and members
 window.addEventListener('storage', function(e) {
     if (e.key === 'announcements') renderAnnouncements();
-    if (e.key === 'visitors') {
-        // if visitor list changes, but user is logged in, re-check validity
-        const username = getVisitorSession();
-        if (username && !getVisitorList().includes(username)) {
-            clearVisitorSession();
+    if (e.key === 'members') {
+        // If member list changes, but user is logged in, re-check validity
+        const username = getMemberSession();
+        const members = getMemberList();
+        if (username && !members.some(m => m.username === username)) {
+            clearMemberSession();
             showLogin();
         }
     }
 });
 
 document.addEventListener("DOMContentLoaded", function() {
-    // If already logged in as visitor
-    const username = getVisitorSession();
-    if (username && getVisitorList().includes(username)) {
+    // If already logged in as member
+    const username = getMemberSession();
+    if (username && getMemberList().some(m => m.username === username)) {
         showAnnouncements(username);
     } else {
         showLogin();
     }
 
-    // Visitor login logic
-    const loginForm = document.getElementById('visitor-login-form');
+    // Member login logic
+    const loginForm = document.getElementById('member-login-form');
     if (loginForm) {
         loginForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            const username = document.getElementById('visitor-username').value.trim();
-            const errorP = document.getElementById('visitor-login-error');
-            if (!username) {
-                errorP.textContent = "Please enter your username.";
+            const username = document.getElementById('member-username').value.trim();
+            const password = document.getElementById('member-password').value;
+            const errorP = document.getElementById('member-login-error');
+            if (!username || !password) {
+                errorP.textContent = "Please enter your username and password.";
                 return;
             }
-            const visitors = getVisitorList();
-            if (!visitors.includes(username)) {
+            const members = getMemberList();
+            const member = members.find(m => m.username === username);
+            if (!member) {
                 errorP.textContent = "Username not registered. Contact admin.";
                 return;
             }
+            if (member.password !== password) {
+                errorP.textContent = "Incorrect password.";
+                return;
+            }
             errorP.textContent = "";
-            setVisitorSession(username);
+            setMemberSession(username);
             showAnnouncements(username);
         });
     }
 
-    // Visitor logout
-    const logoutBtn = document.getElementById('visitor-logout-btn');
+    // Member logout
+    const logoutBtn = document.getElementById('member-logout-btn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', function() {
-            clearVisitorSession();
+            clearMemberSession();
             showLogin();
         });
     }
