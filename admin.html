@@ -42,19 +42,29 @@
                 </div>
                 <div class="input-group">
                     <i class="fa-solid fa-lock"></i>
-                    <input type="password" id="new-member-password" placeholder="Password" maxlength="30" required />
+                    <input type="password" id="new-member-password" placeholder="Password" maxlength="64" required />
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-user-tag"></i>
+                    <select id="new-member-role">
+                        <option value="member">Member</option>
+                        <option value="moderator">Moderator</option>
+                        <option value="admin">Admin</option>
+                    </select>
                 </div>
                 <button type="submit" class="btn-primary"><i class="fa-solid fa-user-plus"></i> Register Member</button>
                 <p id="register-member-error" class="error"></p>
                 <p id="register-member-success" class="success"></p>
             </form>
+            <h2>Member Activity Log</h2>
+            <ul id="member-activity-list" class="member-list"></ul>
             <h2>Manage Announcements</h2>
             <ul id="admin-announcements-list"></ul>
             <button id="fab-add" class="fab" title="Add Announcement"><i class="fa-solid fa-plus"></i></button>
             <div id="fab-modal" class="modal">
                 <div class="modal-content">
                     <span class="close-modal" id="close-modal">&times;</span>
-                    <h3>Add Announcement</h3>
+                    <h3 id="announcement-modal-title">Add Announcement</h3>
                     <form id="announcement-form">
                         <div class="input-group">
                             <i class="fa-solid fa-heading"></i>
@@ -64,7 +74,32 @@
                             <i class="fa-solid fa-quote-right"></i>
                             <textarea id="announcement-message" placeholder="Your announcement..." required></textarea>
                         </div>
-                        <button type="submit" class="btn-primary"><i class="fa-solid fa-paper-plane"></i> Post</button>
+                        <div class="input-group">
+                            <i class="fa-solid fa-tags"></i>
+                            <input type="text" id="announcement-tags" placeholder="Comma-separated tags">
+                        </div>
+                        <div class="input-group">
+                            <i class="fa-solid fa-list"></i>
+                            <select id="announcement-category">
+                                <option value="General">General</option>
+                                <option value="Event">Event</option>
+                                <option value="Alert">Alert</option>
+                                <option value="News">News</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <i class="fa-solid fa-paperclip"></i>
+                            <input type="file" id="announcement-attachment" accept="image/*">
+                        </div>
+                        <div class="input-group">
+                            <i class="fa-solid fa-poll"></i>
+                            <input type="text" id="poll-question" placeholder="Poll question (optional)">
+                        </div>
+                        <div class="input-group">
+                            <i class="fa-solid fa-list-ol"></i>
+                            <input type="text" id="poll-options" placeholder="Poll options, comma-separated">
+                        </div>
+                        <button type="submit" class="btn-primary"><i class="fa-solid fa-paper-plane"></i> Save</button>
                     </form>
                 </div>
             </div>
@@ -73,6 +108,7 @@
         </section>
     </div>
     <script src="animated-bg.js"></script>
+    <script src="sha256.js"></script>
     <script src="admin.js"></script>
 </body>
 </html>
