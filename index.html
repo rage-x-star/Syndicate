@@ -3,28 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Announcement Board</title>
+    <title>the Syndicate - Announcements</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
-<body>
-    <header>
-        <h1><i class="fa-solid fa-bullhorn"></i> Announcements</h1>
-        <a class="header-link" href="admin.html" title="Admin Login"><i class="fa-solid fa-user-lock"></i> Admin</a>
-    </header>
-    <main>
-        <section id="announcements-section">
-            <ul id="announcements-list"></ul>
-        </section>
-        <div class="no-announcements" id="no-announcements" style="display:none;">
-            <i class="fa-solid fa-inbox"></i>
-            <p>No announcements yet.</p>
+<body class="dark-bg">
+    <div class="floating-panel">
+        <div class="panel-header">
+            <h1><i class="fa-solid fa-mask"></i> the Syndicate</h1>
+            <a class="header-link" href="admin.html" title="Admin Login"><i class="fa-solid fa-user-lock"></i></a>
         </div>
-    </main>
-    <footer>
-        <p>&copy; 2025 Announcement Board</p>
-    </footer>
+        <section id="visitor-login-section">
+            <form id="visitor-login-form">
+                <div class="input-group">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text" id="visitor-username" placeholder="Enter your username" required maxlength="20" />
+                </div>
+                <button type="submit" class="btn-primary"><i class="fa-solid fa-sign-in-alt"></i> Login</button>
+                <p id="visitor-login-error" class="error"></p>
+            </form>
+        </section>
+        <section id="announcements-section" style="display:none;">
+            <div class="visitor-welcome">
+                <span id="visitor-welcome-msg"></span>
+                <button id="visitor-logout-btn" class="icon-btn" title="Logout"><i class="fa-solid fa-sign-out-alt"></i></button>
+            </div>
+            <ul id="announcements-list"></ul>
+            <div class="no-announcements" id="no-announcements" style="display:none;">
+                <i class="fa-solid fa-inbox"></i>
+                <p>No announcements yet.</p>
+            </div>
+        </section>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>

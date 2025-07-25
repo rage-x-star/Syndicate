@@ -3,27 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Announcement Board</title>
+    <title>the Syndicate - Admin</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
-<body>
-    <header>
-        <h1><i class="fa-solid fa-user-lock"></i> Admin Panel</h1>
-        <a class="header-link" href="index.html" title="Back to Board">
-            <i class="fa-solid fa-arrow-left"></i> Back
-        </a>
-    </header>
-    <main>
+<body class="dark-bg">
+    <div class="floating-panel">
+        <div class="panel-header">
+            <h1><i class="fa-solid fa-mask"></i> the Syndicate</h1>
+            <a class="header-link" href="index.html" title="Back to Board">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+        </div>
         <section id="login-section">
             <form id="login-form" autocomplete="off">
                 <div class="input-group">
                     <i class="fa-solid fa-user"></i>
-                    <input type="text" id="username" placeholder="Username" required>
+                    <input type="text" id="username" placeholder="Admin Username" required>
                 </div>
                 <div class="input-group">
                     <i class="fa-solid fa-lock"></i>
-                    <input type="password" id="password" placeholder="Password" required>
+                    <input type="password" id="password" placeholder="Admin Password" required>
                 </div>
                 <button type="submit" class="btn-primary"><i class="fa-solid fa-sign-in-alt"></i> Login</button>
                 <p id="login-error" class="error"></p>
@@ -33,9 +33,18 @@
             <div class="admin-actions">
                 <button id="logout-btn" title="Logout" class="icon-btn"><i class="fa-solid fa-sign-out-alt"></i></button>
             </div>
+            <h2>Register New Visitor</h2>
+            <form id="register-visitor-form">
+                <div class="input-group">
+                    <i class="fa-solid fa-user-plus"></i>
+                    <input type="text" id="new-visitor-username" placeholder="New visitor username" maxlength="20" required />
+                </div>
+                <button type="submit" class="btn-primary"><i class="fa-solid fa-user-plus"></i> Register Visitor</button>
+                <p id="register-visitor-error" class="error"></p>
+                <p id="register-visitor-success" class="success"></p>
+            </form>
             <h2>Manage Announcements</h2>
             <ul id="admin-announcements-list"></ul>
-            <!-- Floating action button for new -->
             <button id="fab-add" class="fab" title="Add Announcement"><i class="fa-solid fa-plus"></i></button>
             <div id="fab-modal" class="modal">
                 <div class="modal-content">
@@ -54,11 +63,10 @@
                     </form>
                 </div>
             </div>
+            <h2>Registered Visitors</h2>
+            <ul id="visitor-list" class="visitor-list"></ul>
         </section>
-    </main>
-    <footer>
-        <p>&copy; 2025 Announcement Board</p>
-    </footer>
+    </div>
     <script src="admin.js"></script>
 </body>
 </html>

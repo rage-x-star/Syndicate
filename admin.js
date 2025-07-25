@@ -1,10 +1,28 @@
 const ADMIN_USER = "admin";
 const ADMIN_PASS = "admin123";
 
+function escapeHtml(text) {
+    if (!text) return "";
+    return text.replace(/[&<>"']/g, function(match) {
+        return ({
+            '&': '&amp;', '<': '&lt;', '>': '&gt;',
+            '"': '&quot;', "'": '&#39;'
+        })[match];
+    });
+}
+
+function getVisitorList() {
+    return JSON.parse(localStorage.getItem("visitors") || "[]");
+}
+function setVisitorList(list) {
+    localStorage.setItem("visitors", JSON.stringify(list));
+}
+
 function showAdminPanel() {
     document.getElementById('login-section').style.display = "none";
     document.getElementById('admin-panel-section').style.display = "block";
     loadAdminAnnouncements();
+    loadVisitorList();
 }
 
 function hideAdminPanel() {
@@ -29,6 +47,22 @@ function loadAdminAnnouncements() {
             <div class="announcement-date"><i class="fa-regular fa-clock"></i> ${escapeHtml(a.date)}</div>
         `;
         list.appendChild(li);
+    });
+}
+
+function loadVisitorList() {
+    const vList = document.getElementById('visitor-list');
+    if (!vList) return;
+    vList.innerHTML = "";
+    const visitors = getVisitorList();
+    if (!visitors.length) {
+        vList.innerHTML = `<li><i class="fa-solid fa-user-slash"></i> No registered visitors.</li>`;
+        return;
+    }
+    visitors.forEach(username => {
+        const li = document.createElement('li');
+        li.innerHTML = `<i class="fa-solid fa-user"></i> ${escapeHtml(username)}`;
+        vList.appendChild(li);
     });
 }
 
@@ -97,14 +131,43 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
     }
-});
 
-function escapeHtml(text) {
-    if (!text) return "";
-    return text.replace(/[&<>"']/g, function(match) {
-        return ({
-            '&': '&amp;', '<': '&lt;', '>': '&gt;',
-            '"': '&quot;', "'": '&#39;'
-        })[match];
+    // Visitor registration logic
+    const registerForm = document.getElementById("register-visitor-form");
+    if (registerForm) {
+        registerForm.addEventListener("submit", function(e) {
+            e.preventDefault();
+            const username = document.getElementById("new-visitor-username").value.trim();
+            const errorP = document.getElementById("register-visitor-error");
+            const successP = document.getElementById("register-visitor-success");
+            errorP.textContent = "";
+            successP.textContent = "";
+            if (!username) {
+                errorP.textContent = "Username cannot be empty.";
+                return;
+            }
+            if (username.toLowerCase() === ADMIN_USER || username.toLowerCase() === "admin") {
+                errorP.textContent = "Username reserved.";
+                return;
+            }
+            let visitors = getVisitorList();
+            if (visitors.includes(username)) {
+                errorP.textContent = "Username already registered.";
+                return;
+            }
+            visitors.push(username);
+            setVisitorList(visitors);
+            document.getElementById("new-visitor-username").value = "";
+            successP.textContent = `Visitor "${username}" registered!`;
+            loadVisitorList();
+            // Notify all tabs
+            localStorage.setItem("visitors", JSON.stringify(visitors));
+        });
+    }
+
+    // Listen for visitor list changes
+    window.addEventListener("storage", function(e) {
+        if (e.key === "visitors") loadVisitorList();
+        if (e.key === "announcements") loadAdminAnnouncements();
     });
-}
+});
