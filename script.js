@@ -216,16 +216,31 @@ document.addEventListener("DOMContentLoaded", function() {
             showLogin();
         });
     }
+
+    // --- Redirect to messages.html when clicking mail/PM icon (id="pm-btn") ---
+    const pmBtn = document.getElementById("pm-btn");
+    if (pmBtn) {
+        pmBtn.addEventListener("click", function(e) {
+            e.preventDefault();
+            window.location.href = "messages.html";
+        });
+    }
 });
 
-// --- Private Messaging ---
+// --- Private Messaging (legacy modal, can be removed if using messages.html WhatsApp UI) ---
 function setupPM(username) {
-    document.getElementById("pm-btn").onclick = function(){
-        showPMPanel(username);
-    };
-    document.getElementById("close-pm-modal").onclick = function(){
-        document.getElementById("pm-panel").style.display = "none";
-    };
+    const pmBtn = document.getElementById("pm-btn");
+    if (pmBtn) {
+        pmBtn.onclick = function(){
+            window.location.href = "messages.html";
+        };
+    }
+    const closePmModal = document.getElementById("close-pm-modal");
+    if (closePmModal) {
+        closePmModal.onclick = function(){
+            document.getElementById("pm-panel").style.display = "none";
+        };
+    }
     const pmForm = document.getElementById("pm-form");
     if (pmForm) {
         pmForm.onsubmit = function(e){
@@ -243,11 +258,13 @@ function setupPM(username) {
 }
 function showPMPanel(username) {
     const pmPanel = document.getElementById("pm-panel");
-    pmPanel.style.display = "block";
+    if (pmPanel) pmPanel.style.display = "block";
     const members = getMemberList().filter(m=>m.username!==username);
-    document.getElementById("pm-to").innerHTML = members.map(m=>`<option>${escapeHtml(m.username)}</option>`).join('');
+    const pmTo = document.getElementById("pm-to");
+    if (pmTo) pmTo.innerHTML = members.map(m=>`<option>${escapeHtml(m.username)}</option>`).join('');
     const msgs = getMessages().filter(m=>m.to===username || m.from===username);
-    document.getElementById("pm-messages").innerHTML = msgs.map(m=>
+    const pmMessages = document.getElementById("pm-messages");
+    if (pmMessages) pmMessages.innerHTML = msgs.map(m=>
         `<div class="pm-msg"><b>${escapeHtml(m.from)}</b> to <b>${escapeHtml(m.to)}</b>: ${escapeHtml(m.text)} <span style="font-size:0.85em;color:#888;">${escapeHtml(m.date)}</span></div>`
     ).join('');
 }
@@ -263,7 +280,9 @@ window.addEventListener('storage', function(e) {
         }
     }
     if (e.key === 'messages') {
-        if (document.getElementById("pm-panel").style.display==="block") {
+        // If using legacy modal, update it; otherwise, messages.html handles its own updates
+        const pmPanel = document.getElementById("pm-panel");
+        if (pmPanel && pmPanel.style.display==="block") {
             showPMPanel(getMemberSession());
         }
     }
