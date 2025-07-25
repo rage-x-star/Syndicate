@@ -1,14 +1,14 @@
-// GitHub 404-style spinning globe, centered right, draggable
+// GitHub 404-style spinning globe, right bottom corner, draggable
 
 const canvas = document.querySelector('.animated-bg-canvas');
 const ctx = canvas.getContext('2d');
 let width = window.innerWidth;
 let height = window.innerHeight;
 
-// Globe settings (right center, like old GitHub 404)
+// Globe settings (right bottom corner)
 function GLOBE_RADIUS() { return Math.min(width, height) / 3.1; }
-function GLOBE_CX() { return width - GLOBE_RADIUS() - 80; }
-function GLOBE_CY() { return height / 2; }
+function GLOBE_CX() { return width - GLOBE_RADIUS() - 40; } // 40px from right
+function GLOBE_CY() { return height - GLOBE_RADIUS() - 40; } // 40px from bottom
 
 let globeLon = 0; // Rotation (longitude offset, radians)
 let globeLat = 0; // Tilt (latitude offset, radians)
