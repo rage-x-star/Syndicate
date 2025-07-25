@@ -28,6 +28,25 @@ function escapeHtml(text) {
     });
 }
 
+// --- Member Roles ---
+const SYNDICATE_ROLES = [
+    "Founder",
+    "Chairman / Chairperson",
+    "President",
+    "Chief Executive Officer (CEO)",
+    "Vice President (VP)",
+    "Director General",
+    "Chief of Staff",
+    "Chief Intelligence Officer (CIO)",
+    "Managing Director",
+    "Deputy Director",
+    "Chief Financial Officer (CFO)",
+    "Internal Affairs Head",
+    "Chief Operations Officer (COO)",
+    "Chief Strategy Officer (CSO)",
+    "Smuggling Coordinator / Underground Networks Head"
+];
+
 let myUsername = null;
 let activeChat = null; // username
 
@@ -41,6 +60,15 @@ document.addEventListener("DOMContentLoaded", function() {
     loadChatList();
     setupListeners();
     showChat(null); // No chat selected
+
+    // Make sure pm-btn on this page (if exists) goes to messages.html (prevent reload)
+    const pmBtn = document.getElementById("pm-btn");
+    if (pmBtn) {
+        pmBtn.addEventListener("click", function(e) {
+            e.preventDefault();
+            // Already here, do nothing or reload if needed
+        });
+    }
 });
 
 // --- Chat List Load ---
@@ -62,9 +90,11 @@ function loadChatList() {
             lastMsg: lastMsg ? lastMsg.text : "",
             lastTime: lastMsg ? lastMsg.date : "",
             lastSender: lastMsg ? lastMsg.from : "",
-            unread: userMsgs.filter(msg => msg.to === myUsername && !msg.read).length
+            unread: userMsgs.filter(msg => msg.to === myUsername && !msg.read).length,
+            role: m.role
         }
     }).sort((a,b)=>{
+        // Sort by last message time descending, then by username
         if (a.lastTime && b.lastTime)
             return new Date(b.lastTime)-new Date(a.lastTime);
         else if (a.lastTime) return -1;
@@ -76,7 +106,9 @@ function loadChatList() {
         <li class="${chat.username===activeChat ? "active" : ""}" data-user="${chat.username}">
             <span class="chat-avatar">${escapeHtml(chat.avatar)}</span>
             <span class="chat-info">
-                <span class="chat-name">${escapeHtml(chat.username)}</span><br>
+                <span class="chat-name">${escapeHtml(chat.username)}
+                    ${chat.role ? `<span class="role-badge">${escapeHtml(chat.role)}</span>` : ""}
+                </span><br>
                 <span class="chat-last">${escapeHtml(chat.lastMsg)}</span>
             </span>
             ${chat.unread ? `<span class="chat-unread" style="color:#2de3ff;font-weight:bold;font-size:1.2em;">•</span>` : ""}
@@ -106,8 +138,11 @@ function showChat(username) {
         return;
     }
     chatHeader.style.visibility = "visible";
+    // Show role badge in chat header
+    let theirMember = getMemberList().find(m=>m.username===username);
+    let theirRole = theirMember && theirMember.role ? `<span class="role-badge">${escapeHtml(theirMember.role)}</span>` : "";
     chatUser.innerHTML = `<span class="chat-avatar">${escapeHtml(username.charAt(0).toUpperCase())}</span>
-        <span>${escapeHtml(username)}</span>`;
+        <span>${escapeHtml(username)}${theirRole}</span>`;
     document.getElementById("message-input").disabled = false;
     document.getElementById("send-btn").disabled = false;
     renderMessages(username);
