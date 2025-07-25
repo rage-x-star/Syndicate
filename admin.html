@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>the Syndicate - Admin</title>
+    <title>The Syndicate - Admin</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
-<body class="dark-bg">
+<body class="dark-bg admin-panel">
+    <canvas class="animated-bg-canvas"></canvas>
     <div class="floating-panel">
         <div class="panel-header">
-            <h1><i class="fa-solid fa-mask"></i> the Syndicate</h1>
+            <h1><i class="fa-solid fa-mask"></i> The Syndicate</h1>
             <a class="header-link" href="index.html" title="Back to Board">
                 <i class="fa-solid fa-arrow-left"></i>
             </a>
@@ -33,15 +34,19 @@
             <div class="admin-actions">
                 <button id="logout-btn" title="Logout" class="icon-btn"><i class="fa-solid fa-sign-out-alt"></i></button>
             </div>
-            <h2>Register New Visitor</h2>
-            <form id="register-visitor-form">
+            <h2>Register New Member</h2>
+            <form id="register-member-form">
                 <div class="input-group">
                     <i class="fa-solid fa-user-plus"></i>
-                    <input type="text" id="new-visitor-username" placeholder="New visitor username" maxlength="20" required />
+                    <input type="text" id="new-member-username" placeholder="New member username" maxlength="20" required />
                 </div>
-                <button type="submit" class="btn-primary"><i class="fa-solid fa-user-plus"></i> Register Visitor</button>
-                <p id="register-visitor-error" class="error"></p>
-                <p id="register-visitor-success" class="success"></p>
+                <div class="input-group">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="new-member-password" placeholder="Password" maxlength="30" required />
+                </div>
+                <button type="submit" class="btn-primary"><i class="fa-solid fa-user-plus"></i> Register Member</button>
+                <p id="register-member-error" class="error"></p>
+                <p id="register-member-success" class="success"></p>
             </form>
             <h2>Manage Announcements</h2>
             <ul id="admin-announcements-list"></ul>
@@ -63,10 +68,11 @@
                     </form>
                 </div>
             </div>
-            <h2>Registered Visitors</h2>
-            <ul id="visitor-list" class="visitor-list"></ul>
+            <h2>Registered Members</h2>
+            <ul id="member-list" class="member-list"></ul>
         </section>
     </div>
+    <script src="animated-bg.js"></script>
     <script src="admin.js"></script>
 </body>
 </html>
