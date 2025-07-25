@@ -50,6 +50,52 @@ function clearMemberSession() {
     sessionStorage.removeItem("member_username");
 }
 
+// --- Member Roles ---
+const SYNDICATE_ROLES = [
+    "Founder",
+    "Chairman / Chairperson",
+    "President",
+    "Chief Executive Officer (CEO)",
+    "Vice President (VP)",
+    "Director General",
+    "Chief of Staff",
+    "Chief Intelligence Officer (CIO)",
+    "Managing Director",
+    "Deputy Director",
+    "Chief Financial Officer (CFO)",
+    "Internal Affairs Head",
+    "Chief Operations Officer (COO)",
+    "Chief Strategy Officer (CSO)",
+    "Smuggling Coordinator / Underground Networks Head"
+];
+
+// Render Member List with Roles
+function renderMemberListWithRoles() {
+    const memberListElem = document.getElementById("member-list");
+    if (!memberListElem) return;
+    const members = getMemberList();
+    // Sort by role priority if role exists in SYNDICATE_ROLES, then by username
+    const rolePriority = {};
+    SYNDICATE_ROLES.forEach((r, i) => { rolePriority[r] = i; });
+    members.sort((a, b) => {
+        let ai = rolePriority[a.role] !== undefined ? rolePriority[a.role] : 999;
+        let bi = rolePriority[b.role] !== undefined ? rolePriority[b.role] : 999;
+        if (ai !== bi) return ai - bi;
+        return (a.username || "").localeCompare(b.username || "");
+    });
+
+    memberListElem.innerHTML = members.map(m => `
+        <li>
+            <span class="chat-avatar">${escapeHtml(m.username ? m.username.charAt(0).toUpperCase() : "?")}</span>
+            <span>
+                <b>${escapeHtml(m.username)}</b>
+                ${m.role ? `<span class="role-badge">${escapeHtml(m.role)}</span>` : ""}
+            </span>
+        </li>
+    `).join("");
+}
+
+// --- Announcements Logic ---
 function showAnnouncements(username) {
     document.getElementById("member-login-section").style.display = "none";
     document.getElementById("announcements-section").style.display = "block";
@@ -57,6 +103,7 @@ function showAnnouncements(username) {
     renderAnnouncements(username);
     setupFilters();
     setupPM(username);
+    renderMemberListWithRoles();
 }
 function showLogin() {
     document.getElementById("member-login-section").style.display = "block";
@@ -173,6 +220,7 @@ function votePoll(annId, idx, username) {
     renderAnnouncements(username);
 }
 
+// --- DOMContentLoaded: Login, Logout, PM button, Init ---
 document.addEventListener("DOMContentLoaded", function() {
     const username = getMemberSession();
     if (username && getMemberList().some(m => m.username === username)) {
@@ -227,7 +275,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-// --- Private Messaging (legacy modal, can be removed if using messages.html WhatsApp UI) ---
+// --- Private Messaging (legacy modal, not used if using WhatsApp style page) ---
 function setupPM(username) {
     const pmBtn = document.getElementById("pm-btn");
     if (pmBtn) {
@@ -269,6 +317,7 @@ function showPMPanel(username) {
     ).join('');
 }
 
+// --- Storage Syncing ---
 window.addEventListener('storage', function(e) {
     if (e.key === 'announcements') renderAnnouncements(getMemberSession());
     if (e.key === 'members') {
@@ -278,6 +327,7 @@ window.addEventListener('storage', function(e) {
             clearMemberSession();
             showLogin();
         }
+        renderMemberListWithRoles();
     }
     if (e.key === 'messages') {
         // If using legacy modal, update it; otherwise, messages.html handles its own updates
