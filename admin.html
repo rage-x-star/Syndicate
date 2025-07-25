@@ -5,33 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Announcement Board</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
     <header>
-        <h1>Admin Panel</h1>
+        <h1><i class="fa-solid fa-user-lock"></i> Admin Panel</h1>
+        <a class="header-link" href="index.html" title="Back to Board">
+            <i class="fa-solid fa-arrow-left"></i> Back
+        </a>
     </header>
     <main>
         <section id="login-section">
-            <h2>Admin Login</h2>
-            <form id="login-form">
-                <input type="text" id="username" placeholder="Username" required>
-                <input type="password" id="password" placeholder="Password" required>
-                <button type="submit">Login</button>
+            <form id="login-form" autocomplete="off">
+                <div class="input-group">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text" id="username" placeholder="Username" required>
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn-primary"><i class="fa-solid fa-sign-in-alt"></i> Login</button>
+                <p id="login-error" class="error"></p>
             </form>
-            <p id="login-error" class="error"></p>
         </section>
         <section id="admin-panel-section" style="display:none;">
-            <h2>Add Announcement</h2>
-            <form id="announcement-form">
-                <input type="text" id="announcement-title" placeholder="Title" required>
-                <textarea id="announcement-message" placeholder="Your announcement..." required></textarea>
-                <button type="submit">Post</button>
-            </form>
-            <h2>All Announcements</h2>
-            <ul id="admin-announcements-list">
-                <!-- Announcements for admin -->
-            </ul>
-            <button id="logout-btn">Logout</button>
+            <div class="admin-actions">
+                <button id="logout-btn" title="Logout" class="icon-btn"><i class="fa-solid fa-sign-out-alt"></i></button>
+            </div>
+            <h2>Manage Announcements</h2>
+            <ul id="admin-announcements-list"></ul>
+            <!-- Floating action button for new -->
+            <button id="fab-add" class="fab" title="Add Announcement"><i class="fa-solid fa-plus"></i></button>
+            <div id="fab-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close-modal" id="close-modal">&times;</span>
+                    <h3>Add Announcement</h3>
+                    <form id="announcement-form">
+                        <div class="input-group">
+                            <i class="fa-solid fa-heading"></i>
+                            <input type="text" id="announcement-title" placeholder="Title" required>
+                        </div>
+                        <div class="input-group">
+                            <i class="fa-solid fa-quote-right"></i>
+                            <textarea id="announcement-message" placeholder="Your announcement..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary"><i class="fa-solid fa-paper-plane"></i> Post</button>
+                    </form>
+                </div>
+            </div>
         </section>
     </main>
     <footer>
