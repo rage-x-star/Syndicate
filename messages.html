@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>The Syndicate - Messages</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Fonts and Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="messages.css">
+</head>
+<body class="dark-bg">
+    <canvas class="animated-bg-canvas"></canvas>
+    <div class="messages-app">
+        <aside class="sidebar">
+            <header>
+                <span class="logo">
+                    <i class="fa-solid fa-mask"></i> Syndicate
+                </span>
+                <button class="logout-btn" id="logout-btn" title="Logout">
+                    <i class="fa-solid fa-sign-out-alt"></i>
+                </button>
+            </header>
+            <div class="sidebar-search">
+                <input type="text" id="search-user" placeholder="Search chats...">
+            </div>
+            <ul class="chat-list" id="chat-list">
+                <!-- Chats dynamically loaded here -->
+            </ul>
+        </aside>
+        <main class="chat-main">
+            <header class="chat-header" id="chat-header">
+                <!-- Active chat user info -->
+                <span class="chat-user" id="chat-user"></span>
+            </header>
+            <section class="messages" id="messages">
+                <!-- Messages dynamically loaded here -->
+            </section>
+            <form class="message-input-bar" id="message-form" autocomplete="off">
+                <input type="text" id="message-input" placeholder="Type a message..." maxlength="500" required>
+                <button type="submit" id="send-btn">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </form>
+        </main>
+    </div>
+    <script src="animated-bg.js"></script>
+    <script src="messages.js"></script>
+</body>
+</html>
