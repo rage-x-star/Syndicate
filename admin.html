@@ -123,16 +123,17 @@
     <canvas class="animated-bg-canvas"></canvas>
     <!-- Admin Login Modal -->
     <div id="admin-login-modal" class="modal" style="display:flex;">
-        <div class="modal-content">
-            <h3 style="color:#2de3ff;margin-top:0;">Admin Login</h3>
-            <form id="admin-login-form">
-                <input type="password" id="admin-login-password" placeholder="Admin Password" required style="margin-bottom:1em;width:100%;"/>
-                <button type="submit" class="btn-primary">Login</button>
-            </form>
-            <div id="admin-login-error" style="color:#ff4b5c;min-height:1.5em;margin-top:0.7em;"></div>
-        </div>
+      <div class="modal-content">
+        <h3 style="color:#2de3ff;margin-top:0;">Admin Login</h3>
+        <form id="admin-login-form">
+          <input type="text" id="admin-login-username" placeholder="Admin Username" autocomplete="username" required>
+          <input type="password" id="admin-login-password" placeholder="Admin Password" autocomplete="current-password" required>
+          <button type="submit" class="btn-primary">Login</button>
+        </form>
+        <div id="admin-login-error" style="color:#ff4b5c;min-height:1.5em;margin-top:0.7em;"></div>
+      </div>
     </div>
-    <div class="admin-section">
+    <div class="admin-section" style="display:none;">
         <h2><i class="fa-solid fa-user-gear"></i> Syndicate Admin Panel 
             <button id="admin-logout-btn" class="btn-delete-member" style="float:right;margin-left:1em;">Logout</button>
         </h2>
