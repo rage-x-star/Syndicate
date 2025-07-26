@@ -50,6 +50,60 @@ const SYNDICATE_ROLES = [
     "Smuggling Coordinator / Underground Networks Head"
 ];
 
+// --- Simple Admin Login ---
+const ADMIN_PASSWORD_HASH = "f0b80a2e5f3e5d2b6b0e6e305d2f6d5c647d7c5a5f2b5a5d5e6e5d6a5f5a5d7c"; // replace with your own hash
+function showAdminLogin() {
+    document.getElementById("admin-login-modal").style.display = "flex";
+    document.querySelector(".admin-section").style.display = "none";
+}
+function hideAdminLogin() {
+    document.getElementById("admin-login-modal").style.display = "none";
+    document.querySelector(".admin-section").style.display = "";
+}
+function isAdminAuthenticated() {
+    return sessionStorage.getItem("admin_authenticated") === "yes";
+}
+function setAdminAuthenticated(val) {
+    sessionStorage.setItem("admin_authenticated", val ? "yes" : "");
+}
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("admin-login-form").onsubmit = async function(e){
+        e.preventDefault();
+        const pw = document.getElementById("admin-login-password").value;
+        const err = document.getElementById("admin-login-error");
+        const hash = await hashPassword(pw);
+        if (hash === ADMIN_PASSWORD_HASH) {
+            setAdminAuthenticated(true);
+            hideAdminLogin();
+            renderAdminMemberList();
+            renderAdminAnnouncementList();
+        } else {
+            err.textContent = "Incorrect admin password.";
+        }
+    };
+    document.getElementById("admin-logout-btn").onclick = function(){
+        setAdminAuthenticated(false);
+        showAdminLogin();
+    };
+    if (!isAdminAuthenticated()) {
+        showAdminLogin();
+    } else {
+        hideAdminLogin();
+    }
+
+    // Member management
+    renderAdminMemberList();
+    document.getElementById("add-member-form").onsubmit = addMember;
+    document.getElementById("edit-member-form").onsubmit = saveEditedMember;
+    document.getElementById("edit-member-cancel").onclick = hideEditMemberModal;
+
+    // Announcement management
+    renderAdminAnnouncementList();
+    document.getElementById("add-announcement-form").onsubmit = addAnnouncement;
+
+    setupModalClose();
+});
+
 // ---- Member Management ----
 function renderAdminMemberList() {
     const memberListElem = document.getElementById("admin-member-list");
@@ -209,21 +263,6 @@ function setupModalClose() {
         }
     });
 }
-
-// ---- Initialize ----
-document.addEventListener("DOMContentLoaded", function() {
-    // Member management
-    renderAdminMemberList();
-    document.getElementById("add-member-form").onsubmit = addMember;
-    document.getElementById("edit-member-form").onsubmit = saveEditedMember;
-    document.getElementById("edit-member-cancel").onclick = hideEditMemberModal;
-
-    // Announcement management
-    renderAdminAnnouncementList();
-    document.getElementById("add-announcement-form").onsubmit = addAnnouncement;
-
-    setupModalClose();
-});
 
 // ---- Sync across tabs ----
 window.addEventListener('storage', function(e) {
