@@ -50,8 +50,13 @@ const SYNDICATE_ROLES = [
     "Smuggling Coordinator / Underground Networks Head"
 ];
 
-// --- Simple Admin Login ---
-const ADMIN_PASSWORD_HASH = "f0b80a2e5f3e5d2b6b0e6e305d2f6d5c647d7c5a5f2b5a5d5e6e5d6a5f5a5d7c"; // replace with your own hash
+// --- Admin Login System ---
+const ADMIN_CREDENTIALS = {
+    username: "admin",
+    // SHA-256 of '123'
+    passwordHash: "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3"
+};
+
 function showAdminLogin() {
     document.getElementById("admin-login-modal").style.display = "flex";
     document.querySelector(".admin-section").style.display = "none";
@@ -69,16 +74,17 @@ function setAdminAuthenticated(val) {
 document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("admin-login-form").onsubmit = async function(e){
         e.preventDefault();
+        const uname = document.getElementById("admin-login-username").value.trim();
         const pw = document.getElementById("admin-login-password").value;
         const err = document.getElementById("admin-login-error");
         const hash = await hashPassword(pw);
-        if (hash === ADMIN_PASSWORD_HASH) {
+        if (uname === ADMIN_CREDENTIALS.username && hash === ADMIN_CREDENTIALS.passwordHash) {
             setAdminAuthenticated(true);
             hideAdminLogin();
             renderAdminMemberList();
             renderAdminAnnouncementList();
         } else {
-            err.textContent = "Incorrect admin password.";
+            err.textContent = "Incorrect admin username or password.";
         }
     };
     document.getElementById("admin-logout-btn").onclick = function(){
